@@ -1,0 +1,59 @@
+- name : "map"
+  mesh : "/env/adream_empty.dae"
+  scale : 1.0
+  position :
+    x : 0.0
+    y : 0.0
+    z : 0.0
+  orientation :
+    rx : 0.0
+    ry : 0.0
+    rz : 0.0
+
+- name : "red_cube"
+  mesh : "/objects/red_cube.3ds"
+  scale : 1.0
+  position :
+    x : 0.0
+    y : 0.0
+    z : 1.4
+  orientation :
+    rx : 0.0
+    ry : 0.0
+    rz : 0.0
+
+- name : "blue_cube"
+  mesh : "/objects/blue_cube.3ds"
+  scale : 1.0
+  position :
+    x : 0.5
+    y : 0.0
+    z : 1.4
+  orientation :
+    rx : 0.0
+    ry : 0.0
+    rz : 0.0
+
+- name : "green_cube"
+  mesh : "/objects/green_cube.3ds"
+  scale : 1.0
+  position :
+    x : 0.3
+    y : 0.0
+    z : 1.4
+  orientation :
+    rx : 0.0
+    ry : 0.0
+    rz : 0.0
+
+- name : "torsby_table"
+  mesh : "/objects/torsby_table.blend"
+  scale : 1.0
+  position :
+    x : 0.0
+    y : 0.0
+    z : 0.0
+  orientation :
+    rx : 0.0
+    ry : 0.0
+    rz : 0.0
