@@ -1,5 +1,6 @@
 #!/usr/bin/env python
 
+import time
 import sys
 import rospy
 import argparse
@@ -11,7 +12,7 @@ from underworlds.tools.loader import ModelLoader
 from underworlds.helpers.transformations import translation_matrix, euler_matrix, identity_matrix, compose_matrix
 
 
-class EnvProviderNode(object):
+class EnvProvider(object):
     def __init__(self, ctx, target_world, file_path, mesh_dir):
         self.ctx = ctx
         self.target = ctx.worlds[target_world]
@@ -22,6 +23,7 @@ class EnvProviderNode(object):
         self.load_nodes()
 
     def read_description(self, file_path):
+        rospy.loginfo("[env_provider] Loading static description from : %s" % file_path)
         file = open(file_path, "r")
         self.yaml_file = load(file)
 
@@ -34,10 +36,9 @@ class EnvProviderNode(object):
 
             if static_node["mesh"]:
                 nodes_loaded = ModelLoader().load(self.mesh_dir+static_node["mesh"], self.ctx, world=self.target_world_name, root=None, only_meshes=True, scale=static_node["scale"])
-                rospy.logwarn(nodes_loaded)
                 for n in nodes_loaded:
                     if n.type == MESH:
-                        node.properties["mesh_ids"]=n.properties["mesh_ids"]
+                        node.properties["mesh_ids"] = n.properties["mesh_ids"]
 
             translation = identity_matrix()
             orientation = identity_matrix()
@@ -50,7 +51,10 @@ class EnvProviderNode(object):
             nodes_to_update.append(node)
 
         if nodes_to_update:
+            rospy.loginfo("[env_provider] Updating %s nodes to world <%s>..." % (str(len(nodes_to_update)), self.target_world_name))
             self.target.scene.nodes.update(nodes_to_update)
+
+        rospy.spin()
 
 
 if __name__ == "__main__":
@@ -63,7 +67,7 @@ if __name__ == "__main__":
     parser.add_argument("mesh_dir", help="The path to mesh directory")
     args = parser.parse_args()
 
-    rospy.init_node("env_manager", anonymous=False)
+    rospy.init_node("env_provider", anonymous=False)
 
     with underworlds.Context("Environment provider") as ctx:
-        EnvProviderNode(ctx, args.world, args.file_path, args.mesh_dir)
+        EnvProvider(ctx, args.world, args.file_path, args.mesh_dir)
