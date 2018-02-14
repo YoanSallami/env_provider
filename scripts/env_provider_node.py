@@ -46,9 +46,14 @@ class EnvProvider(object):
                 node.id = self.target.scene.nodebyname(static_node["name"])[0].id
 
             if static_node["mesh"]:
-                nodes_loaded = ModelLoader().load(self.mesh_dir+static_node["mesh"], self.ctx,
+                rospy.loginfo("[env_provider] Loading file : "+static_node["mesh"])
+                try:
+                    nodes_loaded = ModelLoader().load(self.mesh_dir+static_node["mesh"], self.ctx,
                                                   world=self.target_world_name, root=None, only_meshes=True,
                                                   scale=static_node["scale"])
+                except Exception as e:
+                    rospy.logwarn("[env_provider] Exception occurred with %s : %s" % (static_node["name"], str(e)))
+                    continue
                 for n in nodes_loaded:
                     if n.type == MESH:
                         node.properties["mesh_ids"] = n.properties["mesh_ids"]
