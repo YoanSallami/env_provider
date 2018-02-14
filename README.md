@@ -1,5 +1,7 @@
 # Env Provider
-Create an Underworlds world from a static a description 
+Create an Underworlds world from a static a description
+
+![EnvProviderExample](/img/env_provider.png)
 
 ## Installation
 
