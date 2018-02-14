@@ -1,3 +1,7 @@
+##############################
+# Static geometric description
+##############################
+
 - name : "map"
   mesh : "environment/adream_empty.dae"
   scale : 1.0

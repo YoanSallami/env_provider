@@ -1,0 +1,7 @@
+##############################
+# Static fact description
+##############################
+
+- "color(red_cube,red)"
+- "color(green_cube,red)"
+- "color(blue_cube,blue)"

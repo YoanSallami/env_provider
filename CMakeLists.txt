@@ -10,6 +10,9 @@ project(env_provider)
 find_package(catkin REQUIRED COMPONENTS
   rospy
   std_msgs
+  geometry_msgs
+  tf2_msgs
+  tf2
 )
 
 ## System dependencies are found with CMake's conventions

@@ -1,5 +1,5 @@
 <launch>
 
 <node pkg="env_provider" type="env_provider_node.py" name="env_provider"
-    args="env $(find env_provider)/param/static_description.yaml $(find laas_models)/models/"/>
+    args="env $(find env_provider)/param/static_geometric_description.yaml $(find env_provider)/param/static_facts.yaml $(find laas_models)/models/"/>
 </launch>
