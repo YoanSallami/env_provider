@@ -72,8 +72,7 @@ class EnvProvider(object):
             self.target.scene.nodes.update(nodes_to_update)
 
     def publish_static_tf(self):
-        nodes = copy.deepcopy(self.target.scene.nodes)
-        for node in nodes:
+        for node in self.target.scene.nodes:
             if node != self.target.scene.rootnode and node.name != "map":
                 t = TransformStamped()
                 t.header.frame_id = "map"
@@ -106,9 +105,9 @@ class EnvProvider(object):
 
     def run(self):
         self.read_geometric_description()
-        self.read_static_facts()
+        #self.read_static_facts()
         self.load_nodes()
-        self.load_facts()
+        #self.load_facts()
         rate = rospy.Rate(10)
         while not rospy.is_shutdown():
             self.publish_static_tf()
