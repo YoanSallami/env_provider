@@ -3,6 +3,7 @@
 import time
 import sys
 import copy
+import re
 import rospy
 import argparse
 import underworlds
@@ -13,6 +14,7 @@ from tf2_msgs.msg import TFMessage
 from underworlds.types import Node, MESH, Situation
 from underworlds.tools.loader import ModelLoader
 from underworlds.helpers.transformations import *
+from underworlds.tools.primitives_3d import Box
 
 
 class EnvProvider(object):
@@ -39,42 +41,64 @@ class EnvProvider(object):
         self.static_facts = load(f)
 
     def load_nodes(self):
-        nodes_to_update = []
-        for static_node in self.geometric_description:
-            node = Node(static_node["name"], MESH)
-            if self.target.scene.nodebyname(static_node["name"]):
-                node.id = self.target.scene.nodebyname(static_node["name"])[0].id
+        if self.geometric_description:
+            nodes_to_update = []
+            for static_node in self.geometric_description:
+                node = Node(static_node["name"], MESH)
+                if self.target.scene.nodebyname(static_node["name"]):
+                    node.id = self.target.scene.nodebyname(static_node["name"])[0].id
 
-            if static_node["mesh"]:
-                rospy.loginfo("[env_provider] Loading file : "+static_node["mesh"])
-                try:
-                    nodes_loaded = ModelLoader().load(self.mesh_dir+static_node["mesh"], self.ctx,
-                                                  world=self.target_world_name, root=None, only_meshes=True,
-                                                  scale=static_node["scale"])
-                except Exception as e:
-                    rospy.logwarn("[env_provider] Exception occurred with %s : %s" % (static_node["name"], str(e)))
-                    continue
-                for n in nodes_loaded:
-                    if n.type == MESH:
-                        node.properties["mesh_ids"] = n.properties["mesh_ids"]
-                        node.properties["aabb"] = n.properties["aabb"]
+                if static_node["mesh"]:
+                    if re.match("box_", static_node["mesh"]):
 
-            translation = identity_matrix()
-            orientation = identity_matrix()
-            if static_node["position"]:
-                translation = translation_matrix([static_node["position"]["x"], static_node["position"]["y"],
-                                                  static_node["position"]["z"]])
-                if static_node["orientation"]:
-                    orientation = euler_matrix(static_node["orientation"]["rx"], static_node["orientation"]["ry"],
-                                               static_node["orientation"]["rz"], "rxyz")
-            transformation = numpy.dot(translation, orientation)
-            node.transformation = transformation
-            nodes_to_update.append(node)
+                        sizes = [float(s) for s in static_node["mesh"].split("_")[1:]]
+                        rospy.loginfo("[env_provider] Creating Box mesh of "+str(sizes[0])+" "+str(sizes[1])+" "
+                                      + str(sizes[2])+" m")
+                        mesh = Box.create(sizes[0], sizes[1], sizes[2])
+                        self.ctx.push_mesh(mesh)
+                        rospy.logwarn([mesh.id])
+                        node.properties["mesh_ids"] = [mesh.id]
 
-        if nodes_to_update:
-            rospy.loginfo("[env_provider] Updating %s nodes to world <%s>..." % (str(len(nodes_to_update)),
-                                                                                 self.target_world_name))
-            self.target.scene.nodes.update(nodes_to_update)
+                        bb_min = [1e10, 1e10, 1e10]  # x,y,z
+                        bb_max = [-1e10, -1e10, -1e10]  # x,y,z
+                        for v in mesh.vertices:
+                            bb_min[0] = round(min(bb_min[0], v[0]), 5)
+                            bb_min[1] = round(min(bb_min[1], v[1]), 5)
+                            bb_min[2] = round(min(bb_min[2], v[2]), 5)
+                            bb_max[0] = round(max(bb_max[0], v[0]), 5)
+                            bb_max[1] = round(max(bb_max[1], v[1]), 5)
+                            bb_max[2] = round(max(bb_max[2], v[2]), 5)
+                        #node.properties["aabb"] = (bb_min, bb_max)
+                    else:
+                        #rospy.logwarn("[env_provider] Loading file : "+self.mesh_dir+static_node["mesh"])
+                        try:
+                            nodes_loaded = ModelLoader().load(self.mesh_dir+static_node["mesh"], self.ctx,
+                                                          world=self.target_world_name, root=None, only_meshes=True,
+                                                          scale=float(static_node["scale"]) if static_node["scale"] else 1.0)
+                        except Exception as e:
+                            rospy.logwarn("[env_provider] Exception occurred with %s" % (self.mesh_dir+static_node["mesh"]))
+                            continue
+                        for n in nodes_loaded:
+                            if n.type == MESH:
+                                node.properties["mesh_ids"] = n.properties["mesh_ids"]
+                                node.properties["aabb"] = n.properties["aabb"]
+
+                translation = identity_matrix()
+                orientation = identity_matrix()
+                if static_node["position"]:
+                    translation = translation_matrix([static_node["position"]["x"], static_node["position"]["y"],
+                                                      static_node["position"]["z"]])
+                    if static_node["orientation"]:
+                        orientation = euler_matrix(static_node["orientation"]["rx"], static_node["orientation"]["ry"],
+                                                   static_node["orientation"]["rz"], "rxyz")
+                transformation = numpy.dot(translation, orientation)
+                node.transformation = transformation
+                nodes_to_update.append(node)
+
+            if nodes_to_update:
+                rospy.loginfo("[env_provider] Updating %s nodes to world <%s>" % (str(len(nodes_to_update)),
+                                                                                     self.target_world_name))
+                self.target.scene.nodes.update(nodes_to_update)
 
     def publish_static_tf(self):
         for node in self.target.scene.nodes:
@@ -98,15 +122,16 @@ class EnvProvider(object):
                 self.ros_pub["tf"].publish(tfm)
 
     def load_facts(self):
-        facts_to_update = []
-        for static_fact in self.static_facts:
-            sit = Situation(desc=static_fact)
-            facts_to_update.append(sit)
+        if self.static_facts:
+            facts_to_update = []
+            for static_fact in self.static_facts:
+                sit = Situation(desc=static_fact)
+                facts_to_update.append(sit)
 
-        if facts_to_update:
-            rospy.loginfo("[env_provider] Updating %s situations to world <%s>..." % (str(len(facts_to_update)),
-                                                                                      self.target_world_name))
-            self.target.timeline.update(facts_to_update)
+            if facts_to_update:
+                rospy.loginfo("[env_provider] Updating %s situations to world <%s>..." % (str(len(facts_to_update)),
+                                                                                          self.target_world_name))
+                self.target.timeline.update(facts_to_update)
 
     def run(self):
         self.read_geometric_description()

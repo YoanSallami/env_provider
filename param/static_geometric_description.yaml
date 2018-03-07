@@ -14,29 +14,29 @@
     ry : 0.0
     rz : 0.0
 
-- name : "large_sofa"
-  mesh : "objects/large_sofa.blend"
-  scale : 1.0
-  position :
-    x : 4.0
-    y : 8.7
-    z : 0.0
-  orientation :
-    rx : 0.0
-    ry : 0.0
-    rz : 0.0
+#- name : "large_sofa"
+#  mesh : "objects/large_sofa.blend"
+#  scale : 1.0
+#  position :
+#    x : 4.0
+#    y : 8.7
+#    z : 0.0
+#  orientation :
+#    rx : 0.0
+#    ry : 0.0
+#    rz : 0.0
 
-- name : "sofa"
-  mesh : "objects/sofa.blend"
-  scale : 1.0
-  position :
-    x : 3.7
-    y : 5.9
-    z : 0.0
-  orientation :
-    rx : 0.0
-    ry : 0.0
-    rz : 3.14
+#- name : "sofa"
+#  mesh : "objects/sofa.blend"
+#  scale : 1.0
+#  position :
+#    x : 3.7
+#    y : 5.9
+#    z : 0.0
+#  orientation :
+#    rx : 0.0
+#    ry : 0.0
+#    rz : 3.14
 
 - name : "billy_cupboard"
   mesh : "objects/billy_cupboard.blend"
@@ -72,7 +72,7 @@
   orientation :
     rx : 0.0
     ry : 0.0
-    rz : 0.0
+    rz : 1.57
 
 - name : "table_desk-0"
   mesh : "objects/basic_desk.dae"
@@ -122,12 +122,13 @@
     ry : 0.0
     rz : 0.0
 
+
 - name : "carpet"
   mesh : "objects/carpet.blend"
   scale : 1.0
   position :
-    x : 6.0
-    y : 6.5
+    x : 4.2
+    y : 7.0
     z : 0.0
   orientation :
     rx : 0.0
