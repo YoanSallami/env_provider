@@ -3,7 +3,7 @@
 ##############################
 
 - name : "map"
-  mesh : "environment/adream_empty.dae"
+  mesh : "environment/adream.blend"
   scale : 1.0
   position :
     x : 0.0

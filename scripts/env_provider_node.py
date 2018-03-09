@@ -11,7 +11,7 @@ import numpy
 from yaml import load
 from geometry_msgs.msg import TransformStamped
 from tf2_msgs.msg import TFMessage
-from underworlds.types import Node, MESH, Situation
+from underworlds.types import Node, MESH, Situation, ENTITY
 from underworlds.tools.loader import ModelLoader
 from underworlds.helpers.transformations import *
 from underworlds.tools.primitives_3d import Box
@@ -44,7 +44,7 @@ class EnvProvider(object):
         if self.geometric_description:
             nodes_to_update = []
             for static_node in self.geometric_description:
-                node = Node(static_node["name"], MESH)
+                node = Node(static_node["name"], ENTITY)
                 if self.target.scene.nodebyname(static_node["name"]):
                     node.id = self.target.scene.nodebyname(static_node["name"])[0].id
 
@@ -73,15 +73,14 @@ class EnvProvider(object):
                         #rospy.logwarn("[env_provider] Loading file : "+self.mesh_dir+static_node["mesh"])
                         try:
                             nodes_loaded = ModelLoader().load(self.mesh_dir+static_node["mesh"], self.ctx,
-                                                          world=self.target_world_name, root=None, only_meshes=True,
+                                                          world=self.target_world_name, root=node, only_meshes=True,
                                                           scale=float(static_node["scale"]) if static_node["scale"] else 1.0)
                         except Exception as e:
                             rospy.logwarn("[env_provider] Exception occurred with %s" % (self.mesh_dir+static_node["mesh"]))
                             continue
                         for n in nodes_loaded:
                             if n.type == MESH:
-                                node.properties["mesh_ids"] = n.properties["mesh_ids"]
-                                node.properties["aabb"] = n.properties["aabb"]
+                                nodes_to_update.append(n)
 
                 translation = identity_matrix()
                 orientation = identity_matrix()
