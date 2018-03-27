@@ -3,6 +3,7 @@
 import time
 import sys
 import copy
+import math
 import re
 import rospy
 import argparse
@@ -48,6 +49,18 @@ class EnvProvider(object):
                 if self.target.scene.nodebyname(static_node["name"]):
                     node.id = self.target.scene.nodebyname(static_node["name"])[0].id
 
+                translation = identity_matrix()
+                orientation = identity_matrix()
+                if static_node["position"]:
+                    translation = translation_matrix([static_node["position"]["x"], static_node["position"]["y"],
+                                                      static_node["position"]["z"]])
+                    if static_node["orientation"]:
+                        orientation = euler_matrix(static_node["orientation"]["rx"], static_node["orientation"]["ry"],
+                                                   static_node["orientation"]["rz"], "rxyz")
+                transformation = numpy.dot(translation, orientation)
+                node.transformation = transformation
+                nodes_to_update.append(node)
+
                 if static_node["mesh"]:
                     if re.match("box_", static_node["mesh"]):
 
@@ -80,19 +93,8 @@ class EnvProvider(object):
                             continue
                         for n in nodes_loaded:
                             if n.type == MESH:
+                                n.parent = node.id
                                 nodes_to_update.append(n)
-
-                translation = identity_matrix()
-                orientation = identity_matrix()
-                if static_node["position"]:
-                    translation = translation_matrix([static_node["position"]["x"], static_node["position"]["y"],
-                                                      static_node["position"]["z"]])
-                    if static_node["orientation"]:
-                        orientation = euler_matrix(static_node["orientation"]["rx"], static_node["orientation"]["ry"],
-                                                   static_node["orientation"]["rz"], "rxyz")
-                transformation = numpy.dot(translation, orientation)
-                node.transformation = transformation
-                nodes_to_update.append(node)
 
             if nodes_to_update:
                 rospy.loginfo("[env_provider] Updating %s nodes to world <%s>" % (str(len(nodes_to_update)),
@@ -111,11 +113,12 @@ class EnvProvider(object):
                 t.transform.translation.x = position[0]
                 t.transform.translation.y = position[1]
                 t.transform.translation.z = position[2]
-                orientation = quaternion_from_matrix(node.transformation)
-                t.transform.rotation.x = orientation[0]
-                t.transform.rotation.y = orientation[1]
-                t.transform.rotation.z = orientation[2]
-                t.transform.rotation.w = orientation[3]
+                q = quaternion_from_matrix(node.transformation)
+                q_norm = float(math.sqrt((q[0] * q[0]) + (q[1] * q[1]) + (q[2] * q[2]) + (q[3] * q[3])))
+                t.transform.rotation.x = q[0]/q_norm
+                t.transform.rotation.y = q[1]/q_norm
+                t.transform.rotation.z = q[2]/q_norm
+                t.transform.rotation.w = q[3]/q_norm
 
                 tfm = TFMessage([t])
                 self.ros_pub["tf"].publish(tfm)

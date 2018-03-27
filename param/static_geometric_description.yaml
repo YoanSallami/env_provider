@@ -7,12 +7,36 @@
   scale : 1.0
   position :
     x : 0.0
-    y : 0.0
+    y : -0.6
     z : 0.0
   orientation :
     rx : 0.0
     ry : 0.0
     rz : 0.0
+
+- name : "lounge_sign"
+  mesh : "objects/lougne_sign.blend"
+  scale : 0.4
+  position :
+    x : 1.973
+    y : 6.516
+    z : 2.25
+  orientation :
+    rx : 0
+    ry : 0
+    rz : 0
+
+- name : "coffee_sign"
+  mesh : "objects/coffee_sign.blend"
+  scale : 0.4
+  position :
+    x : 5.093
+    y : 8.3
+    z : 2.25
+  orientation :
+    rx : 0
+    ry : 0
+    rz : 1.57
 
 #- name : "large_sofa"
 #  mesh : "objects/large_sofa.blend"
@@ -38,111 +62,111 @@
 #    ry : 0.0
 #    rz : 3.14
 
-- name : "billy_cupboard"
-  mesh : "objects/billy_cupboard.blend"
-  scale : 1.0
-  position :
-    x : 4.7
-    y : 9.35
-    z : 0.0
-  orientation :
-    rx : 0.0
-    ry : 0.0
-    rz : 3.14
-
-- name : "bed"
-  mesh : "objects/bed.dae"
-  scale : 1.0
-  position :
-    x : 3.8
-    y : 11.5
-    z : 0.0
-  orientation :
-    rx : 0.0
-    ry : 0.0
-    rz : 1.57
-
-- name : "torsby_table"
-  mesh : "objects/torsby_table.blend"
-  scale : 1.0
-  position :
-    x : 3.8
-    y : 7.0
-    z : 0.0
-  orientation :
-    rx : 0.0
-    ry : 0.0
-    rz : 1.57
-
-- name : "table_desk-0"
-  mesh : "objects/basic_desk.dae"
-  scale : 1.0
-  position :
-    x : 8.5
-    y : 8.4
-    z : 0.0
-  orientation :
-    rx : 0.0
-    ry : 0.0
-    rz : 1.57
-
-- name : "table_desk-1"
-  mesh : "objects/basic_desk.dae"
-  scale : 1.0
-  position :
-    x : 8.5
-    y : 7.0
-    z : 0.0
-  orientation :
-    rx : 0.0
-    ry : 0.0
-    rz : 1.57
-
-- name : "cupboard"
-  mesh : "objects/cupboard.blend"
-  scale : 1.0
-  position :
-    x : 6.0
-    y : 11.5
-    z : 0.0
-  orientation :
-    rx : 0.0
-    ry : 0.0
-    rz : -1.57
-
-- name : "hemnes_chest"
-  mesh : "objects/hemnes_chest.blend"
-  scale : 1.0
-  position :
-    x : 4.0
-    y : 13.0
-    z : 0.0
-  orientation :
-    rx : 0.0
-    ry : 0.0
-    rz : 0.0
-
-
-- name : "carpet"
-  mesh : "objects/carpet.blend"
-  scale : 1.0
-  position :
-    x : 4.2
-    y : 7.0
-    z : 0.0
-  orientation :
-    rx : 0.0
-    ry : 0.0
-    rz : 1.57
-
-- name : "hemnes_console"
-  mesh : "objects/hemnes_console.blend"
-  scale : 1.0
-  position :
-    x : 3.4
-    y : 9.35
-    z : 0.0
-  orientation :
-    rx : 0.0
-    ry : 0.0
-    rz : 3.14
+#- name : "billy_cupboard"
+#  mesh : "objects/billy_cupboard.blend"
+#  scale : 1.0
+#  position :
+#    x : 4.7
+#    y : 9.35
+#    z : 0.0
+#  orientation :
+#    rx : 0.0
+#    ry : 0.0
+#    rz : 3.14
+#
+#- name : "bed"
+#  mesh : "objects/bed.dae"
+#  scale : 1.0
+#  position :
+#    x : 3.8
+#    y : 11.5
+#    z : 0.0
+#  orientation :
+#    rx : 0.0
+#    ry : 0.0
+#    rz : 1.57
+#
+#- name : "torsby_table"
+#  mesh : "objects/torsby_table.blend"
+#  scale : 1.0
+#  position :
+#    x : 3.8
+#    y : 7.0
+#    z : 0.0
+#  orientation :
+#    rx : 0.0
+#    ry : 0.0
+#    rz : 1.57
+#
+#- name : "table_desk-0"
+#  mesh : "objects/basic_desk.dae"
+#  scale : 1.0
+#  position :
+#    x : 8.5
+#    y : 8.4
+#    z : 0.0
+#  orientation :
+#    rx : 0.0
+#    ry : 0.0
+#    rz : 1.57
+#
+#- name : "table_desk-1"
+#  mesh : "objects/basic_desk.dae"
+#  scale : 1.0
+#  position :
+#    x : 8.5
+#    y : 7.0
+#    z : 0.0
+#  orientation :
+#    rx : 0.0
+#    ry : 0.0
+#    rz : 1.57
+#
+#- name : "cupboard"
+#  mesh : "objects/cupboard.blend"
+#  scale : 1.0
+#  position :
+#    x : 6.0
+#    y : 11.5
+#    z : 0.0
+#  orientation :
+#    rx : 0.0
+#    ry : 0.0
+#    rz : -1.57
+#
+#- name : "hemnes_chest"
+#  mesh : "objects/hemnes_chest.blend"
+#  scale : 1.0
+#  position :
+#    x : 4.0
+#    y : 13.0
+#    z : 0.0
+#  orientation :
+#    rx : 0.0
+#    ry : 0.0
+#    rz : 0.0
+#
+#
+#- name : "carpet"
+#  mesh : "objects/carpet.blend"
+#  scale : 1.0
+#  position :
+#    x : 4.2
+#    y : 7.0
+#    z : 0.0
+#  orientation :
+#    rx : 0.0
+#    ry : 0.0
+#    rz : 1.57
+#
+#- name : "hemnes_console"
+#  mesh : "objects/hemnes_console.blend"
+#  scale : 1.0
+#  position :
+#    x : 3.4
+#    y : 9.35
+#    z : 0.0
+#  orientation :
+#    rx : 0.0
+#    ry : 0.0
+#    rz : 3.14
