@@ -7,36 +7,36 @@
   scale : 1.0
   position :
     x : 0.0
-    y : -0.6
+    y : 0.0
     z : 0.0
   orientation :
     rx : 0.0
     ry : 0.0
     rz : 0.0
 
-- name : "lounge_sign"
-  mesh : "objects/lougne_sign.blend"
-  scale : 0.4
-  position :
-    x : 1.973
-    y : 6.516
-    z : 2.25
-  orientation :
-    rx : 0
-    ry : 0
-    rz : 0
-
-- name : "coffee_sign"
-  mesh : "objects/coffee_sign.blend"
-  scale : 0.4
-  position :
-    x : 5.093
-    y : 8.3
-    z : 2.25
-  orientation :
-    rx : 0
-    ry : 0
-    rz : 1.57
+#- name : "lounge_sign"
+#  mesh : "objects/lougne_sign.blend"
+#  scale : 0.4
+#  position :
+#    x : 1.973
+#    y : 6.516
+#    z : 2.25
+#  orientation :
+#    rx : 0
+#    ry : 0
+#    rz : 0
+#
+#- name : "coffee_sign"
+#  mesh : "objects/coffee_sign.blend"
+#  scale : 0.4
+#  position :
+#    x : 5.093
+#    y : 8.3
+#    z : 2.25
+#  orientation :
+#    rx : 0
+#    ry : 0
+#    rz : 1.57
 
 #- name : "large_sofa"
 #  mesh : "objects/large_sofa.blend"
