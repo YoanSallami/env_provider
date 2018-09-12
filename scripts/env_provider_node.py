@@ -131,7 +131,7 @@ class EnvProvider(object):
                 facts_to_update.append(sit)
 
             if facts_to_update:
-                rospy.loginfo("[env_provider] Updating %s situations to world <%s>..." % (str(len(facts_to_update)),
+                rospy.logdebug("[env_provider] Updating %s situations to world <%s>..." % (str(len(facts_to_update)),
                                                                                           self.target_world_name))
                 self.target.timeline.update(facts_to_update)
 
